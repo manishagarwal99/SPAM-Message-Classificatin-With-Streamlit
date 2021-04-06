@@ -33,7 +33,7 @@ def preprocess_text(messy_string):
         for term in cleaned.split()
         if term not in set(stop_words)
     )
-
+#@st.cache(suppress_st_warning=True)
 def app(n=5):
     st.title('Spam Filtering Techniques for Short Message Service')
 
@@ -48,23 +48,32 @@ def app(n=5):
     amount of publicly available datasets. Most of the existing methods inherit from email spam filtering techniques which do not 
     always perform well on SMS spam.""")
 
-    st.markdown("""We study various short message service spam filtering techniques based on a Kaggle 
-    	[dataset](https://www.kaggle.com/uciml/sms-spam-collection-dataset) composed of 5572 messages, whose 4825 are legitimate 
+    st.markdown("""Here, we study various short message service spam filtering techniques based on a [Kaggle 
+    	dataset](https://www.kaggle.com/uciml/sms-spam-collection-dataset) composed of 5572 messages, whose 4825 are legitimate 
     	and 747 are spam. The [Bag-of-Words](https://en.wikipedia.org/wiki/Bag-of-words_model) models followed by 
     	term-frequency-inverse-document frequency(tf-idf) transformation is employed for feature extraction. 
     	Several state-of-the-art classifiers are compared, i.e. logistic regression, regularized logistic regression, linear 
-    	and kernel support vector machine (SVM), k-nearest neighbours, multinomial Bayes, decision trees and random forests where the 
+    	and kernel support vector machine (SVM), k-nearest neighbours, multinomial Bayes and decision trees where the 
     	best hyper-parameters are identified using 10-fold cross validation. We demonstrate that all the classifiers perform 
     	remarkably well in terms of misclassification error and that even simple linear methods, such as logistic regression 
     	leads to less than 5% of misclassification error. We study two resampling methods that can be used to counter the class 
     	imbalance present in the training set, i.e. downsampling of the majority class and upsampling of the minority class. 
     	We show that both lead to an increase of the sensitivity at the cost of a lower specificity.""")
 
-    st.markdown('You can toggle the sidebar menu to see the various operations performed on the dataset.')
+    st.markdown('You can toggle the navigation menu to see the various operations performed on the dataset.')
 
-    st.write('  ')    	
+    st.write('')    	
 
     st.markdown('Here, you can enter your own text and see what the clasifier tells about it...')
+    
+    st.markdown("""For example, 
+    * `CONGRATlations You won 2 tIckETs to Hamilton in 
+	NYC http://www.hamiltonbroadway.com/J?NaIOl/event   wORtH over $500.00...CALL 
+	555-477-8914 or send message to: hamilton@freetix.com to get ticket !! !`* would return *`Spam`* and 
+    * `Sounds good, Tom, then see u there`* would return *`Not a spam`*""" )
+
+    st.write('')
+            
     text = st.text_area('')
     if text != '':
     	if load_model.predict(vectorizer.transform([preprocess_text(text)])):
