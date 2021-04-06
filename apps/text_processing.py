@@ -27,7 +27,7 @@ def preprocess_text(messy_string):
         if term not in set(stop_words)
     )
 
-@st.cache(suppress_st_warning=True)
+#@st.cache(suppress_st_warning=True)
 def app(n=5):
 	st.header('Text Pre-processing')
 
