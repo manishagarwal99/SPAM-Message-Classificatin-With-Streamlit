@@ -3,7 +3,7 @@ from PIL import Image
 
 #st. set_page_config(layout="wide")
 
-
+@st.cache(suppress_st_warning=True)
 def app(n=5):
 	st.header('Data Exploration')
 	st.write('')
@@ -41,12 +41,12 @@ def app(n=5):
 	the biggest.
 	Interestingly, it can be seen that most frequent words
 	in spam messages are related to money (“free”, “account”,
-	“winner”, “win”, “subscription”, "contract") and urgency (“urgence”,
+	“winner”, “win”, credit, "service") and urgency (“urgent”,
 	“last”, “week”), which must be familiar to anybody
 	that have already received spam messages. In ham messages,
 	the words are the usual ones used in discussion like “anything”,
 	“home”, “go”, “wait”, “remember” and “joke”. We also
-	notice the presence of onomatopoeia and slang words that are
+	notice the presence of slang words that are
 	characteristics of text messages like “rofl”, “dat”, "bitching",
 	“lol” and “yup”.""")
 	row1, row2 = st.beta_columns(2)
@@ -65,7 +65,8 @@ def app(n=5):
 	st.markdown("""
 	The above mentioned plots are informative in terms of two
 	necessary preprocessing steps:
-	* Convert the words to lowercase
-	* Remove the most frequent english words """)
+	* Normalization
+	* Remove the most frequent english words 
+	* Stemming and Lematization of words""")
 
 #app(5)
