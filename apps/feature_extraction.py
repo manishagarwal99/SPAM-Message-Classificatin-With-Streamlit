@@ -27,7 +27,7 @@ def app(n=5):
 
 	st.latex(r'''x =\sum_{i=1}^{D} x_{d_i}''')
 
-	st.markdown("""where the result is a one-hot vector in which all entries are 
+	st.markdown("""where the result is a [one-hot vector](https://en.wikipedia.org/wiki/One-hot) in which all entries are 
 	zero except the single entry corresponding to the location of
 	the word d_i in the vocabulary.
 	In the specific case of our dataset of SMS, we build
@@ -36,7 +36,7 @@ def app(n=5):
 
 	st.markdown("### 2. Tokenization")
 	st.markdown(""" We can tokenize individual terms and generate 
-	[**bag of words model**](https://en.wikipedia.org/wiki/Bag-of-words_model). 
+	[bag of words model](https://en.wikipedia.org/wiki/Bag-of-words_model). 
 	You may notice this model has a glaring pitfall: it fails to capture the innate 
 	structure of human language. Under this model, the following sentences have 
 	the same feature vector although they convey dramatically different meanings.""")
@@ -82,7 +82,7 @@ def app(n=5):
 	st.latex(r'''T(n,d_i) =tf_n * idf_{d_i}''')
 	st.write("""where, the matrix of occurrences weighted by the tf-idf coefficient
 	is used as input of the proposed classifiers.""")
-	st.markdown("""Now we are gonna follow following process:""")
+	st.markdown("""The implementation of tf-idf statistic would require following process:""")
 	st.markdown("""
 	* Count how many times does a word occur in each message(term frequency)
 	* Weight the counts, so that frequent tokens get lower weight (inverse document frequency)
@@ -90,7 +90,7 @@ def app(n=5):
 	""")
 	st.markdown("""Scikit-learn has an off-the-shelf tool called `TfidfVectorizer` that performs 
 	n-gram tokenization and also computes the tf-idf statistic. Two technical 
-	details regarding `TfidfVectorizer`:
+	details regarding *TfidfVectorizer* are:
 	""")
 	st.markdown("""
 	* The tf-idf statistic is computed 
