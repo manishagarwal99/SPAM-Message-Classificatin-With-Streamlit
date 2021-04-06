@@ -7,7 +7,7 @@ def app(n=5):
 	st.header('Comparison of several Classifiers')
 
 	st.markdown("### 1. Considered Classifiers")
-	st.markdown(""" The goal of the project is to design a classifier which takes a feature vector h 2 RM containing the
+	st.markdown(""" The goal of the project is to design a classifier which takes a feature vector containing the
 	normalized word frequencies of a given message and assigns
 	it to either ham (class 0) or spam (class 1).
 	""")
@@ -47,7 +47,7 @@ def app(n=5):
 
 	* `Decision trees (DT)`: Decision trees stratify the feature
 	space recursively into simple regions and assign the label
-	ham or spam using the majority vote. The CT are fitted
+	ham or spam using the majority vote. The DT are fitted
 	using a cost-complexity pruning based on the Gini index
 	and with a minimum number of leaves estimated by crossvalidation;
 
@@ -61,11 +61,17 @@ def app(n=5):
 	st.markdown("### 2. Experimental settings")
 	st.markdown("""The dataset is divided into a training and a test set with
 	a 80/20 split. Hyper-parameter tuning is achieved by 10-
-	fold cross validation based on the misclassification error on
+	fold [cross validation](https://towardsdatascience.com/cross-validation-in-machine-learning-72924a69872f) 
+	based on the [misclassification error](https://towardsdatascience.com/machine-learning-an-error-by-any-other-name-a7760a702c4d) on
 	the training set. Once the best estimators are identified, the
 	following metrics are computed on the test set:
 	""")
-	st.markdown("""
+	row1, row2 = st.beta_columns((2,1))
+
+	image0 = Image.open('normal/confusion_matrix.png')
+	row2.image(image0, caption='Confusion Matrix')
+
+	row1.markdown("""
 	* Misclassification error (ME)
 
 	* Sensitivity (SE): The sensitivity designates the probability
@@ -75,7 +81,7 @@ def app(n=5):
 	of predicting ham given that the true class is ham.
 	""")
 
-	st.markdown("""In this section, we assume that sensitivity and specificity are
+	row1.markdown("""In this section, we assume that sensitivity and specificity are
 	of equal importance in our setting. Thus, our objective is to
 	minimize the total misclassification error.
 	The algorithms and methods are implemented on Python,
@@ -90,9 +96,7 @@ def app(n=5):
 	st.markdown("""What we can do is utilize **nested cross-validation** to alleviate this issue. In this procedure, we implement $k$-fold cross-validation to train $k$ models (the outer loop). 
 	Using the *training set* of each fold, we perform `GridSearchCV` to tune the hyperparameters and select a winning model (the inner loop).
 	Then, using the *validation set* of each fold, we evaluate the performance of the winning model developed in the inner loop. 
-	Finally, by computing the mean of this performance value across the $k$ folds, we can report a robust estimate of the model's performance. 
-	This can be a bit confusing so I recommend taking a glance at [this visual representation](https://mlr-org.github.io/mlr-tutorial/devel/html/nested_resampling/index.html) of what's going on.
-	""")
+	Finally, by computing the mean of this performance value across the $k$ folds, we can report a robust estimate of the model's performance.""")
 	st.markdown("""Using nested cross-validation, let's test a range of 20 values for the regularization hyperparameter and use 10-fold cross-validation to assess the classifier's performance.""")
 
 	st.markdown("### 4. Results")
@@ -110,7 +114,7 @@ def app(n=5):
 	vectors, which makes the stratification of the feature space
 	rather difficult.""")
 	st.markdown("""
-	The classifiers have a very high specificity but suffer from a
+	The classifiers have a very high sensitivity but suffer from a
 	lower specificity which may be preferable. Indeed, that means
 	that nearly all the ham messages are classified as ham while
 	some messages are misclassified. A deeper investigation of
