@@ -1,6 +1,33 @@
 import streamlit as st
+import re
+import nltk
+from nltk.corpus import stopwords
+
 #st. set_page_config(layout="wide")
 
+stop_words = stopwords.words('english')
+porter = nltk.PorterStemmer()
+
+def preprocess_text(messy_string):
+    assert(type(messy_string) == str)
+    cleaned = re.sub(r'\b[\w\-.]+?@\w+?\.\w{2,4}\b', 'emailaddr', messy_string)
+    cleaned = re.sub(r'(http[s]?\S+)|(\w+\.[A-Za-z]{2,4}\S*)', 'httpaddr',
+                     cleaned)
+    cleaned = re.sub(r'£|\$', 'moneysymb', cleaned)
+    cleaned = re.sub(
+        r'\b(\+\d{1,2}\s)?\d?[\-(.]?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b',
+        'phonenumbr', cleaned)
+    cleaned = re.sub(r'\d+(\.\d+)?', 'numbr', cleaned)
+    cleaned = re.sub(r'[^\w\d\s]', ' ', cleaned)
+    cleaned = re.sub(r'\s+', ' ', cleaned)
+    cleaned = re.sub(r'^\s+|\s+?$', '', cleaned.lower())
+    return ' '.join(
+        porter.stem(term) 
+        for term in cleaned.split()
+        if term not in set(stop_words)
+    )
+
+@st.cache(suppress_st_warning=True)
 def app(n=5):
 	st.header('Text Pre-processing')
 
@@ -43,21 +70,29 @@ def app(n=5):
 	st.write("""**`congratlations numbr tickets hamilton nyc httpaddr worth moneysymbnumbr call phonenumbr send message emailaddr get ticket`**""")
 
 	st.markdown("### Stemming & Lemmatization")
-	st.markdown("""It's likely the corpus contains words with various suffixes such as "distribute", 
+	st.markdown(""" We use *Stemming* and *Lemmatization* to reduce the number of tokens that carry out the same information and hence speed up the whole process. 
+	It's likely the corpus contains words with various suffixes such as "distribute", 
 	"distributing", "distributor" or "distribution". We can replace these four words with just 
 	"distribut" via a preprocessing step called **stemming**.
-	There are numerous stemming strategies, some more aggressive than others. Let's use one from 
-	NLTK called the `Porter stemmer`.""")
+	There are numerous stemming strategies. Let's use one from NLTK called the `Porter stemmer`.""")
+	st.write("""The example text after *stemming* has now become : """)
+	st.markdown("`congratl numbr ticket hamilton nyc httpaddr worth moneysymbnumbr call phonenumbr send messag emailaddr get ticket`")
 	st.markdown("""
-	However, stemming can be crude and chop off suffixes haphazhardly. A better alternative is 
-	**lemmatization**. For example, the word `worse` reduces to `bad`.""")
-	st.markdown('The example text has now become :')
-	st.write("""**`congratl numbr ticket hamilton nyc httpaddr worth moneysymbnumbr call phonenumbr send messag emailaddr get ticket`**""")
-	#st.write("""**`congratlations numbr ticket hamilton nyc httpaddr worth moneysymbnumbr call phonenumbr send message emailaddr get ticket`**""")
-	st.write('')
+	However, stemming can be crude and chop off suffixes haphazhardly. 
+	The difference is that stem might not be an actual word whereas, lemma is an actual language word. 
+	A better alternative is **lemmatization**. Here, language is important so we use lemmatization as it uses a corpus to match root forms. 
+	For example, the word `worse` reduces to `bad`.""")
+	st.markdown('The example text after *lemmatization* has now become :')
+	st.write("""`congratulations numbr ticket hamilton nyc httpaddr worth moneysymbnumbr call phonenumbr send message emailaddr get ticket`""")
+	st.markdown("Notice the change in *congratulations* and *message*.")
 	st.write('')
 	
 	st.markdown("""
-	What a change! Now that we've performed all operations on every data and enriched the corpus 
+	Now that we've performed all operations on every data and enriched the corpus 
 	with meaningful terms, we're ready to move on to *feature engineering*.""")
+
+	st.markdown("""Here you can enter your sentence and see the processed output :""")
+	text = st.text_area('')
+	st.write(preprocess_text(text))
+
 #app(5)
