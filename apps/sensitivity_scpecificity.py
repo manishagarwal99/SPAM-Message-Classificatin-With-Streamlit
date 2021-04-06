@@ -8,7 +8,7 @@ def app(n=5):
 	st.markdown("### 1. Increasing the Sensitivity of the Classifiers")
 	st.markdown(""" The class imbalance coupled with the minimization of the
 	misclassification error induce significant differences in the
-	sensitivity and specificity as it can be seen on Figure 3.
+	sensitivity and specificity as it can be seen on Figure 4.
 	Indeed, the misclassification error is a symmetric loss. Hence
 	classifiers focus more on the prediction accuracy of the most
 	common class, which often results in poor accuracy for the
