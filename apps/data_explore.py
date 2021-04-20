@@ -3,7 +3,6 @@ from PIL import Image
 
 #st. set_page_config(layout="wide")
 
-@st.cache(suppress_st_warning=True)
 def app(n=5):
 	st.header('Data Exploration')
 	st.write('')
