@@ -93,6 +93,7 @@ def app(n=5):
 
 	st.markdown("""Here you can enter your sentence and see the processed output :""")
 	text = st.text_area('')
-	st.write(preprocess_text(text))
+	if text != '':
+		st.write(preprocess_text(text))	
 
 #app(5)
